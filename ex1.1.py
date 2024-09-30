@@ -187,7 +187,16 @@ def update_book_properties(books, updates):
         list of dict: Updated list of book dictionaries
     """
     # TODO: Implement book property updates with error handling
-    pass
+    for title, properties in updates.items():
+        # Find the book by title
+        for book in books:
+            if book['title'] == title:
+                # Update the book's properties
+                for key, value in properties.items():
+                    if key in book:
+                        book[key] = value
+                break # Exit loop after updating the book
+
 
 def convert_currency(books, exchange_rate):
     """
@@ -199,7 +208,20 @@ def convert_currency(books, exchange_rate):
         list of dict: Updated list of book dictionaries with converted prices
     """
     # TODO: Implement currency conversion with error handling
-    pass
+    # We must first check if the given exchange rate is valid
+    if exchange_rate <= 0:
+        raise ValueError("Exchange rate must be greater than zero.")
+    
+    for book in books:
+        try:
+            # Convert the price to the new currency
+            original_price = book['price']
+            book['price'] = round(original_price * exchange_rate, 2)
+        except KeyError as e:
+            print(f"Warning: Missing price key for book '{book.get('title', 'Unknown')}'.")
+        except Exception as e:
+            print(f"Error converting price for book '{book.get('title', 'Unknown')}': {e}")
+        
 
 def main():
     input_file = "books.csv"
