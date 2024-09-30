@@ -69,7 +69,7 @@ def calculate_acceleration(velocity_data, time_step):
         # Calculate acceleration = change in velocity / time_step
         acceleration = (velocity_curr - velocity_prev) / time_step
         time_midpoint = (time_prev + time_curr) / 2
-        acceleration_data.append(time_midpoint, acceleration)
+        acceleration_data.append((time_midpoint, acceleration))
     return acceleration_data
 
 def find_max_force(force_data):
@@ -83,13 +83,14 @@ def find_max_force(force_data):
     tuple: (time, max_force)
     """
     # TODO: Implement maximum force calculation
-    forces = []
-    for i in force_data:
-        time, force = i
-        forces.append(force)
+    max_force = float('-inf')
+    max_force_time = None
 
-    max_force = max(forces)
-    return max_force
+    for time, force in force_data:
+        if force > max_force:
+            max_force = force
+            max_force_time = time
+    return max_force_time, max_force
         
 
 def calculate_work_done(force_data, position_data):
@@ -143,7 +144,7 @@ def write_results(filename, results_data):
 
 
 def main():
-    input_file = "mechanical_data.csv"
+    input_file = "Mechanical Data Analysis\mechanical_data.csv"
     output_file = "analysis_results.csv"
     time_step = 0.1  # s
 
