@@ -11,7 +11,16 @@ def read_mechanical_data(filename):
     list of tuples: List of (time, position, force) tuples
     """
     # TODO: Implement reading from CSV file
-    pass
+    mechanical_data = []
+    with open(filename, mode='r') as file:
+        csv_reader = csv.reader(file)
+        next(csv_reader) # Skipping the header row
+        for row in csv_reader:
+            time = float(row[0])
+            position = float(row[1])
+            force = float(row[2])
+            mechanical_data.append((time, position, force))
+    return mechanical_data
 
 def calculate_velocity(position_data, time_step):
     """
@@ -25,7 +34,19 @@ def calculate_velocity(position_data, time_step):
     list of tuples: List of (time, velocity) tuples
     """
     # TODO: Implement velocity calculation
-    pass
+    velocity_data = []
+
+    for i in range(1, len(position_data)):
+        time_prev, position_prev = position_data[i - 1]
+        time_curr, position_curr = position_data[i]
+
+        # Calculate Velocity = change in position / time_step
+        velocity = (position_curr - position_prev) / time_step
+
+        # For the velocity time stamp, we can use the mid-point between previous and current time
+        time_midpoint = (time_prev + time_curr) / 2
+        velocity_data.append((time_midpoint, velocity))
+    return velocity_data
 
 def calculate_acceleration(velocity_data, time_step):
     """
