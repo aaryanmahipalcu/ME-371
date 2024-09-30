@@ -37,7 +37,14 @@ def calculate_discount_price(books, discount_rate):
         list of dict: Updated list of book dictionaries with discounted price
     """
     # TODO: Implement discounted price calculation
-    pass
+    discount_rate = 0.15
+    for book in books:
+        # Calculating the discounted price
+        discounted_price = book['price'] * (1 - discount_rate)
+
+        # Adding the new key-value pair for the discounted price
+        book['discounted_price'] = float(discounted_price)
+    return books
 
 def find_unique_genres(books):
     """
