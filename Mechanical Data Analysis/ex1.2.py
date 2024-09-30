@@ -60,7 +60,17 @@ def calculate_acceleration(velocity_data, time_step):
     list of tuples: List of (time, acceleration) tuples
     """
     # TODO: Implement acceleration calculation
-    pass
+    acceleration_data = []
+
+    for i in range(1, len(velocity_data)):
+        time_prev, velocity_prev = velocity_data[i - 1]
+        time_curr, velocity_curr = velocity_data[i]
+
+        # Calculate acceleration = change in velocity / time_step
+        acceleration = (velocity_curr - velocity_prev) / time_step
+        time_midpoint = (time_prev + time_curr) / 2
+        acceleration_data.append(time_midpoint, acceleration)
+    return acceleration_data
 
 def find_max_force(force_data):
     """
@@ -73,7 +83,14 @@ def find_max_force(force_data):
     tuple: (time, max_force)
     """
     # TODO: Implement maximum force calculation
-    pass
+    forces = []
+    for i in force_data:
+        time, force = i
+        forces.append(force)
+
+    max_force = max(forces)
+    return max_force
+        
 
 def calculate_work_done(force_data, position_data):
     """
@@ -87,7 +104,27 @@ def calculate_work_done(force_data, position_data):
     float: Total work done
     """
     # TODO: Implement work done calculation
-    pass
+    # Initializing total_work to 0
+    total_work = 0
+    # We must ensure that force_data and position_data are of the same length
+    if len(force_data) != len(position_data):
+        raise ValueError("force_data and position_data must have the same length")
+    
+    for i in range(1, len(force_data)):
+        force_prev = force_data[i - 1][1]
+        force_curr = force_data[i][1]
+        avg_force = (force_prev + force_curr) / 2
+
+        position_prev = position_data[i - 1][1]
+        position_curr = position_data[i][1]
+        delta_position = position_curr - position_prev
+
+        # Calculating work done = F_avg * delta x
+        work_done = avg_force * delta_position
+        total_work += work_done
+    return total_work
+
+    
 
 def write_results(filename, results_data):
     """
@@ -98,7 +135,12 @@ def write_results(filename, results_data):
     results_data (dict): Dictionary containing results to be written
     """
     # TODO: Implement writing results to CSV file
-    pass
+    with open(filename, mode='w', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(results_data.keys())
+        writer.writerow(results_data.values())
+    print(f"Results succesfully written to {filename}")
+
 
 def main():
     input_file = "mechanical_data.csv"
