@@ -48,7 +48,7 @@ def calculate_bending_moment(length, loads):
     """
     # TODO: Implement bending moment calculation
     # Initializing the max moment
-    max_moment = 0
+    max_moment = 0.0
     positions = [0] + [load[0] for load in loads] + [length]
 
     for x in positions:
@@ -73,7 +73,20 @@ def calculate_shear_force(length, loads):
     float: Maximum shear force
     """
     # TODO: Implement shear force calculation
-    pass
+    max_shear = 0.0
+    shear_force = 0.0
+
+    positions = [0] + [load[0] for load in loads] + [length]
+    loads_sorted = sorted(loads)
+
+    for x in positions:
+        for position, magnitude in loads_sorted:
+            if position < x:
+                shear_force -= magnitude
+            else:
+                break
+        max_shear = max(max_shear, abs(shear_force))
+    return max_shear
 
 def calculate_max_bending_stress(max_moment, moment_of_inertia, y_max):
     """
@@ -88,7 +101,11 @@ def calculate_max_bending_stress(max_moment, moment_of_inertia, y_max):
     float: Maximum bending stress
     """
     # TODO: Implement max bending stress calculation
-    pass
+    if moment_of_inertia == 0:
+        raise ValueError("Moment of Inertia must not be 0")
+    
+    max_stress = (max_moment * y_max) / moment_of_inertia
+    return max_stress
 
 def calculate_max_shear_stress(max_shear, first_moment, moment_of_inertia, width):
     """
@@ -104,7 +121,11 @@ def calculate_max_shear_stress(max_shear, first_moment, moment_of_inertia, width
     float: Maximum shear stress
     """
     # TODO: Implement max shear stress calculation
-    pass
+    if moment_of_inertia == 0 or width == 0:
+        raise ValueError("Moment of Inertia and width must not be 0")
+    
+    max_shear_stress = (max_shear * first_moment) / (moment_of_inertia * width)
+    return max_shear_stress
 
 def calculate_max_deflection(length, loads, elastic_modulus, moment_of_inertia):
     """
@@ -120,7 +141,17 @@ def calculate_max_deflection(length, loads, elastic_modulus, moment_of_inertia):
     float: Maximum deflection
     """
     # TODO: Implement max deflection calculation
-    pass
+    max_deflection = 0.0
+
+    for position, magnitude in loads:
+        if position < 0 or position > length:
+            raise ValueError("Load position must be within the beam length")
+        
+        # Calculating deflection at the point of load
+        a = position
+        deflection = (magnitude * a * (length - a)**2) / (6 * elastic_modulus * moment_of_inertia * length)
+        max_deflection += deflection
+    return max_deflection
 
 def write_results(filename, results_data):
     """
@@ -131,7 +162,11 @@ def write_results(filename, results_data):
     results_data (dict): Dictionary containing results to be written
     """
     # TODO: Implement writing results to CSV file
-    pass
+    with open(filename, mode='w', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(results_data.keys())
+        writer.writerow(results_data.values())
+    print(f"Results succesfully written to {filename}")
 
 def main():
     input_file = "beam_data.csv"
