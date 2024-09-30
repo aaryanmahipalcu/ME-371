@@ -13,7 +13,27 @@ def read_beam_data(filename):
     where loads is a list of tuples (position, magnitude)
     """
     # TODO: Implement reading from CSV file
-    pass
+    loads = []
+    with open(filename, mode='r') as file:
+        csv_reader = csv.reader(file)
+        header = next(csv_reader)
+
+        # Read all beam properties
+        beam_properties = next(csv_reader)
+        length = float(beam_properties[0])
+        width = float(beam_properties[1])
+        height = float(beam_properties[2])
+        elastic_modulus = float(beam_properties[3])
+
+        # Read remaining rows for loads
+        for row in csv_reader:
+            if len(row) != 2:
+                continue # skipping rows that does not have exactly two elements for position and magnitude of loads
+            position = float(row[0])
+            magnitude = float(row[1])
+            loads.append((position, magnitude))
+    return (length, width, height, elastic_modulus, loads)
+
 
 def calculate_bending_moment(length, loads):
     """
@@ -27,7 +47,19 @@ def calculate_bending_moment(length, loads):
     float: Maximum bending moment
     """
     # TODO: Implement bending moment calculation
-    pass
+    # Initializing the max moment
+    max_moment = 0
+    positions = [0] + [load[0] for load in loads] + [length]
+
+    for x in positions:
+        moment = 0
+
+        for position, magnitude in loads:
+            if position <= x:
+                distance = x - position
+                moment += magnitude * distance
+        max_moment = max(max_moment, moment)
+    return max_moment
 
 def calculate_shear_force(length, loads):
     """
