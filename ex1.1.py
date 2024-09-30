@@ -13,7 +13,7 @@ def load_book_data(filename):
     # Creating a list called 'books'
     books = []
     # Open the csv file and read its contents
-    with open('books.csv', mode='r', newline='', encoding='utf-8') as file:
+    with open(filename, mode='r', newline='', encoding='utf-8') as file:
         csv_reader = csv.DictReader(file)
 
         #Iterating over each row in the csv and appending it to the list
@@ -132,7 +132,26 @@ def calculate_average_price_by_genre(books):
         dict: Dictionary of average prices by genre
     """
     # TODO: Implement average price calculation by genre
-    pass
+    # Dictionary to hold the total price and count of books for each genre
+    genre_totals = {}
+
+    # Iterate through each book in the dataset
+    for book in books:
+        genre = book['genre']
+        price = book['price']
+        # Initialize the genre entry in the dictionary if it doesn't exist
+        if genre not in genre_totals:
+            genre_totals[genre] = {'total_price': 0, 'count': 0}
+
+        # Accumulate the total price and count for each genre
+        genre_totals[genre]['total_price'] += price
+        genre_totals[genre]['count'] += 1
+
+    # Calculating the average price for each genre
+    average_prices = {}
+    for genre, totals in genre_totals.items():
+        average_prices[genre] = totals['total_price'] / totals['count']
+    return average_prices
 
 def generate_book_report(books, output_filename):
     """
@@ -142,7 +161,21 @@ def generate_book_report(books, output_filename):
         output_filename (str): Name of the output text file
     """
     # TODO: Implement report generation
-    pass
+    with open(output_filename, mode='w', encoding='utf-8') as file:
+        # Write the header
+        file.write("Book Report\n")
+        file.write("=" * 40 + "\n")
+
+        # Write each book's details
+        for book in books:
+            file.write(f"Title: {book['title']}\n")
+            file.write(f"Author: {book['author']}\n")
+            file.write(f"Year: {book['year']}\n")
+            file.write(f"Genre: {book['genre']}\n")
+            file.write(f"Price: ${book['price']:.2f}\n")
+            file.write("-" * 40 + "\n")
+
+    print(f"Report generated and saved to {output_filename}")
 
 def update_book_properties(books, updates):
     """
