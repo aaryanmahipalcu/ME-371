@@ -37,7 +37,6 @@ def calculate_discount_price(books, discount_rate):
         list of dict: Updated list of book dictionaries with discounted price
     """
     # TODO: Implement discounted price calculation
-    discount_rate = 0.15
     for book in books:
         # Calculating the discounted price
         discounted_price = book['price'] * (1 - discount_rate)
@@ -55,7 +54,13 @@ def find_unique_genres(books):
         set: Set of unique genres
     """
     # TODO: Implement unique genres extraction
-    pass
+    unique_genres = set()
+    #Iterating over each book in the list
+    for book in books:
+        #Add genre of each book to the set
+        unique_genres.add(book['genre'])
+        # Since a set can only have unique values, when we return the set we will get a set of unique genres from the dataset
+    return unique_genres 
 
 def filter_books_by_year(books, start_year, end_year):
     """
@@ -68,7 +73,13 @@ def filter_books_by_year(books, start_year, end_year):
         list of dict: Filtered list of book dictionaries
     """
     # TODO: Implement book filtering by year
-    pass
+    filtered_books = []
+    # Iterate over each book in the list
+    for book in books:
+        # Checking if the book is published within a specified range
+        if start_year <= book['year'] <= end_year:
+            filtered_books.append(book)
+    return filtered_books
 
 def sort_books(books, sort_by, reverse=False):
     """
@@ -81,7 +92,8 @@ def sort_books(books, sort_by, reverse=False):
         list of dict: Sorted list of book dictionaries
     """
     # TODO: Implement book sorting
-    pass
+    books.sort(key=lambda book: book[sort_by], reverse=reverse)
+    return books
 
 def find_most_prolific_author(books):
     """
@@ -92,7 +104,24 @@ def find_most_prolific_author(books):
         str: Name of the most prolific author
     """
     # TODO: Implement finding the most prolific author
-    pass
+    author_count = {}
+    # Counting the occurances of each author
+    for book in books:
+        author = book['author']
+        if author in author_count:
+            author_count[author] += 1
+        else:
+            author_count[author] = 1
+    
+    #Finding the most prolific author
+    find_most_prolific_author = None
+    max_books = 0
+
+    for author, count in author_count.items():
+        if count > max_books:
+            find_most_prolific_author = author
+            max_books = count
+    return find_most_prolific_author
 
 def calculate_average_price_by_genre(books):
     """
