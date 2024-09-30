@@ -10,7 +10,22 @@ def load_book_data(filename):
         list of dict: List of dictionaries containing book properties
     """
     # TODO: Implement CSV file reading
-    pass
+    # Creating a list called 'books'
+    books = []
+    # Open the csv file and read its contents
+    with open('books.csv', mode='r', newline='', encoding='utf-8') as file:
+        csv_reader = csv.DictReader(file)
+
+        #Iterating over each row in the csv and appending it to the list
+        for row in csv_reader:
+            books.append({
+                'title': row['title'],
+                'author': row['author'],
+                'year': int(row['year']), #Converting the year to an integer
+                'genre': row['genre'],
+                'price': float(row['price']) #Converting the price to a float
+            })
+    return books 
 
 def calculate_discount_price(books, discount_rate):
     """
