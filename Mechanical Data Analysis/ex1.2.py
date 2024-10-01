@@ -144,7 +144,7 @@ def write_results(filename, results_data):
 
 
 def main():
-    input_file = "Mechanical Data Analysis/mechanical_data.csv"
+    input_file = "mechanical_data.csv"
     output_file = "analysis_results.csv"
     time_step = 0.1  # s
 

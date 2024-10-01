@@ -224,7 +224,7 @@ def convert_currency(books, exchange_rate):
         
 
 def main():
-    input_file = "Data Analysis and Processing/books.csv"
+    input_file = "books.csv"
     output_file = "book_analysis_report.txt"
     
     try:

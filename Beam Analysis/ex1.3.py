@@ -169,7 +169,7 @@ def write_results(filename, results_data):
     print(f"Results succesfully written to {filename}")
 
 def main():
-    input_file = "Beam Analysis/beam_data.csv"
+    input_file = "beam_data.csv"
     output_file = "beam_analysis_results.csv"
 
     try:
