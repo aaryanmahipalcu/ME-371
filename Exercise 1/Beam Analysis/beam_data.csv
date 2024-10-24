@@ -1,6 +1,3 @@
-length,width,height,elastic_modulus
-2.91,0.173,0.196,199797000000.0
-1.43,2257.0
-1.63,1958.0
-2.51,2510.0
-2.72,4112.0
+version https://git-lfs.github.com/spec/v1
+oid sha256:83f00e6a79e13502cb86c29ea3d762c806eda0176d64880c9c92bd2b98eec524
+size 122
